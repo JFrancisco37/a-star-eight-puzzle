@@ -12,7 +12,7 @@ This project is a Python implementation of A* search algorithms for solving the 
 ## Contributors
 
 - João Francisco Hirtenkauf Munhoz – 00275634
-- Full Name 2 – Student ID
+- Luís Antônio Mikhail Dawa - 00313853
 - Mario Augusto Brum da Silveira - 00322868
 
 > Replace the names above with your actual team information.
