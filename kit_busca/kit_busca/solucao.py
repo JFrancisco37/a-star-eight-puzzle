@@ -1,11 +1,12 @@
 from typing import Iterable, Set, Tuple
 import heapq
+from itertools import count
 
 class Nodo:
     """
     Implemente a classe Nodo com os atributos descritos na funcao init
     """
-    def __init__(self, estado:str, pai:Nodo, acao:str, custo:int):
+    def __init__(self, estado:str, pai:'Nodo', acao:str, custo:int):
         """
         Inicializa o nodo com os atributos recebidos
         :param estado:str, representacao do estado do 8-puzzle
@@ -82,6 +83,26 @@ def expande(nodo:Nodo)->Set[Nodo]:
 
     return vizinhos
 
+
+
+def caminho(v:Nodo)->list[str]:
+    
+    acoes = []
+
+    while v.acao:
+        acoes.append(v.acao)
+        v = v.pai
+
+    return list(reversed(acoes))
+
+
+
+def hamming(estado: str) -> int:
+    objetivo = "12345678_"
+    return sum(1 for i in range(9) if estado[i] != objetivo[i] and estado[i] != '_')
+
+
+
 def astar_hamming(estado:str)->list[str]:
     """
     Recebe um estado (string), executa a busca A* com h(n) = soma das distâncias de Hamming e
@@ -92,7 +113,43 @@ def astar_hamming(estado:str)->list[str]:
     :return:
     """
     # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    visitados = set()
+    fronteira = []
+
+    #raiz
+    contador = count()
+    raiz = Nodo(estado, None, None, 0)
+    heapq.heappush(fronteira, (hamming(estado), next(contador), raiz))
+
+    while fronteira:
+        _, _, v = heapq.heappop(fronteira)
+        
+        if v.estado == "12345678_":
+            return caminho(v)
+
+        visitados.add(v.estado)
+
+        for vizinho in expande(v):
+            if vizinho.estado not in visitados:
+                heapq.heappush(fronteira, (vizinho.custo+hamming(vizinho.estado), next(contador), vizinho))
+
+    return None
+
+
+
+def manhattan(estado: str) -> int:
+    objetivo = "12345678_"
+    distance = 0
+
+    for position, c in enumerate(estado):
+        if c != '_':
+            row = position // 3
+            col = position % 3
+            obj_row = (int(c)-1) // 3
+            obj_col = (int(c)-1) % 3
+            distance += abs(row-obj_row)+abs(col-obj_col)
+
+    return distance
 
 
 def astar_manhattan(estado:str)->list[str]:
@@ -105,7 +162,28 @@ def astar_manhattan(estado:str)->list[str]:
     :return:
     """
     # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    visitados = set()
+    fronteira = []
+
+    #raiz
+    contador = count()
+    raiz = Nodo(estado, None, None, 0)
+    heapq.heappush(fronteira, (manhattan(estado), next(contador), raiz))
+
+    while fronteira:
+        _, _, v = heapq.heappop(fronteira)
+        
+        if v.estado == "12345678_":
+            return caminho(v)
+
+        visitados.add(v.estado)
+
+        for vizinho in expande(v):
+            if vizinho.estado not in visitados:
+                heapq.heappush(fronteira, (vizinho.custo+manhattan(vizinho.estado), next(contador), vizinho))
+
+    return None
+
 
 #opcional,extra
 def bfs(estado:str)->list[str]:
