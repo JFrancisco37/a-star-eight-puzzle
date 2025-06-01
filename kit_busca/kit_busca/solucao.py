@@ -13,7 +13,17 @@ class Nodo:
         :param custo:int, custo do caminho da raiz até este nó
         """
         # substitua a linha abaixo pelo seu codigo
-        raise NotImplementedError
+        self.estado = estado
+        self.pai = pai
+        self.acao = acao
+        self.custo = custo
+
+
+def swap(s: str, i: int, j: int) -> str:
+    string_list = list(s)
+    string_list[i], string_list[j] = string_list[j], string_list[i]
+    return ''.join(string_list)
+
 
 
 def sucessor(estado:str)->Set[Tuple[str,str]]:
@@ -25,7 +35,27 @@ def sucessor(estado:str)->Set[Tuple[str,str]]:
     :return:
     """
     # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    position = estado.index("_")
+
+    row = position // 3
+    col = position % 3
+
+    sucessores: Set[Tuple[str, str]] = set()
+
+    if row != 0:
+        sucessores.add(("acima", swap(estado, position, position-3)))
+
+    if row != 2:
+        sucessores.add(("abaixo", swap(estado, position, position+3)))
+
+    if col != 0:
+        sucessores.add(("esquerda", swap(estado, position, position-1)))
+
+    if col != 2:
+        sucessores.add(("direita", swap(estado, position, position+1)))
+
+
+    return sucessores
 
 
 def expande(nodo:Nodo)->Set[Nodo]:
