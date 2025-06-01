@@ -1,4 +1,5 @@
 from typing import Iterable, Set, Tuple
+import heapq
 
 class Nodo:
     """
@@ -17,6 +18,13 @@ class Nodo:
         self.pai = pai
         self.acao = acao
         self.custo = custo
+
+
+    def __eq__(self, other):
+        return isinstance(other, Nodo) and self.estado == other.estado
+
+    def __hash__(self):
+        return hash(self.estado)
 
 
 def swap(s: str, i: int, j: int) -> str:
@@ -66,8 +74,13 @@ def expande(nodo:Nodo)->Set[Nodo]:
     :return:
     """
     # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    sucessores = sucessor(nodo.estado)
 
+    vizinhos = set()
+    for suc in sucessores:
+        vizinhos.add(Nodo(estado=suc[1], pai=nodo, acao=suc[0], custo=nodo.custo+1))
+
+    return vizinhos
 
 def astar_hamming(estado:str)->list[str]:
     """
