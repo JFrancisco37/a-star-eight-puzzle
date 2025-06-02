@@ -20,29 +20,15 @@ This project is a Python implementation of A* search algorithms for solving the 
 ## Project Structure
 
 - `solucao.py`: Main source code with all required functions and classes.
-- `prepara.sh`: Optional script to install additional dependencies.
 - `README.md`: Project documentation and team information.
 
-## Dependencies
 
-This project uses **Python 3.12** and the following libraries:
-
-- `numpy`
-- `pandas`
-- `numba`
-
-To install them using `pip`:
-
-```bash
-pip install numpy pandas numba
-```
-
- ## Results
-| Algoritmo           | Tempo (s) | Nós Expandidos | Custo da Solução |
+ ## Results for initial state “2_3541687”
+| Algorithm           | Time (s)  | Expanded Nodes | Cost             |
 | ------------------- | --------- | -------------- | ---------------- |
 | A\* Hamming         | 0.1141    | 13.506         | 23               |
 | A\* Manhattan       | 0.0194    | 1.830          | 23               |
-| A\* Heurística nova | 0.0197    | 1.830          | 23               |
+| A\* New Heuristic   | 0.0197    | 1.830          | 23               |
 | BFS                 | 1.2399    | 117.263        | 23               |
 | DFS                 | 0.0682    | 14.626         | 14.571           |
 
