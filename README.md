@@ -36,3 +36,13 @@ To install them using `pip`:
 ```bash
 pip install numpy pandas numba
 
+
+ ## Results
+| Algoritmo           | Tempo (s) | Nós Expandidos | Custo da Solução |
+| ------------------- | --------- | -------------- | ---------------- |
+| A\* Hamming         | 0.1141    | 13.506         | 23               |
+| A\* Manhattan       | 0.0194    | 1.830          | 23               |
+| A\* Heurística nova | 0.0197    | 1.830          | 23               |
+| BFS                 | 1.2399    | 117.263        | 23               |
+| DFS                 | 0.0682    | 14.626         | 14.571           |
+

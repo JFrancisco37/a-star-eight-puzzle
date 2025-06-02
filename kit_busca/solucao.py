@@ -1,6 +1,7 @@
 from typing import Iterable, Set, Tuple
 import heapq
 from itertools import count
+import time
 
 class Nodo:
     """
@@ -115,6 +116,8 @@ def astar_hamming(estado:str)->list[str]:
     # substituir a linha abaixo pelo seu codigo
     visitados = set()
     fronteira = []
+    expandidos = 0
+    start = time.time()
 
     #raiz
     contador = count()
@@ -125,11 +128,15 @@ def astar_hamming(estado:str)->list[str]:
         _, _, v = heapq.heappop(fronteira)
         
         if v.estado == "12345678_":
+            print("Tempo:", time.time() - start, "segundos")
+            print("Nós expandidos:", expandidos)
+            print("Custo da solução:", v.custo)
             return caminho(v)
 
         if v.estado not in visitados:
             visitados.add(v.estado)
 
+            expandidos+=1
             for vizinho in expande(v):
                 if vizinho.estado not in visitados:
                     heapq.heappush(fronteira, (vizinho.custo+hamming(vizinho.estado), next(contador), vizinho))
@@ -165,6 +172,8 @@ def astar_manhattan(estado:str)->list[str]:
     # substituir a linha abaixo pelo seu codigo
     visitados = set()
     fronteira = []
+    expandidos = 0
+    start = time.time()
 
     #raiz
     contador = count()
@@ -175,11 +184,15 @@ def astar_manhattan(estado:str)->list[str]:
         _, _, v = heapq.heappop(fronteira)
         
         if v.estado == "12345678_":
+            print("Tempo:", time.time() - start, "segundos")
+            print("Nós expandidos:", expandidos)
+            print("Custo da solução:", v.custo)
             return caminho(v)
 
         if v.estado not in visitados:
             visitados.add(v.estado)
 
+            expandidos+=1
             for vizinho in expande(v):
                 if vizinho.estado not in visitados:
                     heapq.heappush(fronteira, (vizinho.custo+manhattan(vizinho.estado), next(contador), vizinho))
@@ -200,20 +213,25 @@ def bfs(estado:str)->list[str]:
     # substituir a linha abaixo pelo seu codigo
     visitados = set()
     fronteira = []
+    expandidos = 0
+    start = time.time()
 
     raiz = Nodo(estado, None, None, 0)
     fronteira.append(raiz)
-    visitados.add(estado)
 
     while fronteira:
         v = fronteira.pop(0)
 
         if v.estado == "12345678_":
+            print("Tempo:", time.time() - start, "segundos")
+            print("Nós expandidos:", expandidos)
+            print("Custo da solução:", v.custo)
             return caminho(v)
 
         if v.estado not in visitados:
             visitados.add(v.estado)
 
+            expandidos+=1
             for vizinho in expande(v):
                 if vizinho.estado not in visitados:
                     fronteira.append(vizinho)
@@ -233,20 +251,25 @@ def dfs(estado:str)->list[str]:
     # substituir a linha abaixo pelo seu codigo
     visitados = set()
     fronteira = []
+    expandidos = 0
+    start = time.time()
 
     raiz = Nodo(estado, None, None, 0)
     fronteira.append(raiz)
-    visitados.add(estado)
 
     while fronteira:
         v = fronteira.pop()
 
         if v.estado == "12345678_":
+            print("Tempo:", time.time() - start, "segundos")
+            print("Nós expandidos:", expandidos)
+            print("Custo da solução:", v.custo)
             return caminho(v)
 
         if v.estado not in visitados:
             visitados.add(v.estado)
 
+            expandidos+=1
             for vizinho in expande(v):
                 if vizinho.estado not in visitados:
                     fronteira.append(vizinho)
@@ -256,7 +279,7 @@ def dfs(estado:str)->list[str]:
 
 def heuristic(estado:str) -> int:
     objetivo = "12345678_"
-    return sum(1 for i in range(9) if abs(estado[i]-objetivo[i])>1 and estado[i] != '_')
+    return sum(1 for i in range(9) if estado[i] != '_' and objetivo[i] != '_' and abs(int(estado[i])-int(objetivo[i]))>1)
 
 #opcional,extra
 def astar_new_heuristic(estado:str)->list[str]:
@@ -271,21 +294,27 @@ def astar_new_heuristic(estado:str)->list[str]:
     # substituir a linha abaixo pelo seu codigo
     visitados = set()
     fronteira = []
+    expandidos = 0
+    start = time.time()
 
     #raiz
     contador = count()
     raiz = Nodo(estado, None, None, 0)
-    heapq.heappush(fronteira, (manhattan(estado), next(contador), raiz))
+    heapq.heappush(fronteira, (heuristic(estado), next(contador), raiz))
 
     while fronteira:
         _, _, v = heapq.heappop(fronteira)
         
         if v.estado == "12345678_":
+            print("Tempo:", time.time() - start, "segundos")
+            print("Nós expandidos:", expandidos)
+            print("Custo da solução:", v.custo)
             return caminho(v)
 
         if v.estado not in visitados:
             visitados.add(v.estado)
 
+            expandidos+=1
             for vizinho in expande(v):
                 if vizinho.estado not in visitados:
                     heapq.heappush(fronteira, (vizinho.custo+manhattan(vizinho.estado), next(contador), vizinho))
