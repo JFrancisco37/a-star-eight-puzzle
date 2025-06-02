@@ -97,7 +97,7 @@ def caminho(v:Nodo)->list[str]:
 
 
 
-def hamming(estado: str) -> int:
+def hamming(estado:str) -> int:
     objetivo = "12345678_"
     return sum(1 for i in range(9) if estado[i] != objetivo[i] and estado[i] != '_')
 
@@ -127,17 +127,18 @@ def astar_hamming(estado:str)->list[str]:
         if v.estado == "12345678_":
             return caminho(v)
 
-        visitados.add(v.estado)
+        if v.estado not in visitados:
+            visitados.add(v.estado)
 
-        for vizinho in expande(v):
-            if vizinho.estado not in visitados:
-                heapq.heappush(fronteira, (vizinho.custo+hamming(vizinho.estado), next(contador), vizinho))
+            for vizinho in expande(v):
+                if vizinho.estado not in visitados:
+                    heapq.heappush(fronteira, (vizinho.custo+hamming(vizinho.estado), next(contador), vizinho))
 
     return None
 
 
 
-def manhattan(estado: str) -> int:
+def manhattan(estado:str) -> int:
     objetivo = "12345678_"
     distance = 0
 
@@ -176,11 +177,12 @@ def astar_manhattan(estado:str)->list[str]:
         if v.estado == "12345678_":
             return caminho(v)
 
-        visitados.add(v.estado)
+        if v.estado not in visitados:
+            visitados.add(v.estado)
 
-        for vizinho in expande(v):
-            if vizinho.estado not in visitados:
-                heapq.heappush(fronteira, (vizinho.custo+manhattan(vizinho.estado), next(contador), vizinho))
+            for vizinho in expande(v):
+                if vizinho.estado not in visitados:
+                    heapq.heappush(fronteira, (vizinho.custo+manhattan(vizinho.estado), next(contador), vizinho))
 
     return None
 
@@ -196,7 +198,27 @@ def bfs(estado:str)->list[str]:
     :return:
     """
     # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    visitados = set()
+    fronteira = []
+
+    raiz = Nodo(estado, None, None, 0)
+    fronteira.append(raiz)
+    visitados.add(estado)
+
+    while fronteira:
+        v = fronteira.pop(0)
+
+        if v.estado == "12345678_":
+            return caminho(v)
+
+        if v.estado not in visitados:
+            visitados.add(v.estado)
+
+            for vizinho in expande(v):
+                if vizinho.estado not in visitados:
+                    fronteira.append(vizinho)
+
+    return None
 
 #opcional,extra
 def dfs(estado:str)->list[str]:
@@ -209,7 +231,32 @@ def dfs(estado:str)->list[str]:
     :return:
     """
     # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    visitados = set()
+    fronteira = []
+
+    raiz = Nodo(estado, None, None, 0)
+    fronteira.append(raiz)
+    visitados.add(estado)
+
+    while fronteira:
+        v = fronteira.pop()
+
+        if v.estado == "12345678_":
+            return caminho(v)
+
+        if v.estado not in visitados:
+            visitados.add(v.estado)
+
+            for vizinho in expande(v):
+                if vizinho.estado not in visitados:
+                    fronteira.append(vizinho)
+
+    return None
+
+
+def heuristic(estado:str) -> int:
+    objetivo = "12345678_"
+    return sum(1 for i in range(9) if abs(estado[i]-objetivo[i])>1 and estado[i] != '_')
 
 #opcional,extra
 def astar_new_heuristic(estado:str)->list[str]:
@@ -222,4 +269,25 @@ def astar_new_heuristic(estado:str)->list[str]:
     :return:
     """
     # substituir a linha abaixo pelo seu codigo
-    raise NotImplementedError
+    visitados = set()
+    fronteira = []
+
+    #raiz
+    contador = count()
+    raiz = Nodo(estado, None, None, 0)
+    heapq.heappush(fronteira, (manhattan(estado), next(contador), raiz))
+
+    while fronteira:
+        _, _, v = heapq.heappop(fronteira)
+        
+        if v.estado == "12345678_":
+            return caminho(v)
+
+        if v.estado not in visitados:
+            visitados.add(v.estado)
+
+            for vizinho in expande(v):
+                if vizinho.estado not in visitados:
+                    heapq.heappush(fronteira, (vizinho.custo+manhattan(vizinho.estado), next(contador), vizinho))
+
+    return None
