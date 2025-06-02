@@ -35,7 +35,7 @@ To install them using `pip`:
 
 ```bash
 pip install numpy pandas numba
-
+```
 
  ## Results
 | Algoritmo           | Tempo (s) | Nós Expandidos | Custo da Solução |
