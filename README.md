@@ -15,8 +15,6 @@ This project is a Python implementation of A* search algorithms for solving the 
 - Luís Antônio Mikhail Dawa - 00313853
 - Mario Augusto Brum da Silveira - 00322868
 
-> Replace the names above with your actual team information.
-
 ## Project Structure
 
 - `solucao.py`: Main source code with all required functions and classes.
